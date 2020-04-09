@@ -1,0 +1,14 @@
+{
+    "start": {
+        "name": "Start",
+        "colour": "green",
+        "objects": [
+            "chest",
+            "key",
+            "door"
+        ],
+        "actions": {
+            "open-chest": "Nothing to see here"
+        }
+    }
+}

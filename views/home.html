@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html style="height: 100%;">
+    <head>
+        <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>This is it!</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+        <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+    </head>
+    <body class="h-100">
+        <div class="container-fluid h-100">
+            <div class="row h-100">
+                <div class="col-8 border rounded stage h-100">
+                    Test2
+                </div>
+                <div class="col-4 interact h-100">
+                    <div class="col-12 border rounded" style="height: 48%;">
+                        Test
+                    </div>
+                    <div class="col-12" style="height: 4%;"></div>
+                    <div class="col-12 border rounded" style="height: 48%;">
+                        Test
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+        <script lang="javascript">
+            $(document).ready(function() {
+                $.get('/start', function(res) {
+                    console.log(res);
+                });
+            });
+        </script>
+    </body>
+</html>
