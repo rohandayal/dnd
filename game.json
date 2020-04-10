@@ -1,14 +1,38 @@
 {
+    "actions": [
+        "look at",
+        "say",
+        "examine",
+        "pick up",
+        "hit",
+        "open",
+        "go to",
+        "drink",
+        "ask",
+        "call",
+        "set"
+    ],
     "start": {
-        "name": "Start",
+        "name": "start",
         "colour": "green",
         "objects": [
-            "chest",
-            "key",
-            "door"
+            {
+                "name": "chest",
+                "visible": true
+            },
+            {
+                "name": "key",
+                "visible": false,
+                "icon": "key.png"
+            },
+            {
+                "name": "door",
+                "visible": true
+            }
         ],
         "actions": {
             "open-chest": "Nothing to see here"
-        }
+        },
+        "background": "#FFDAC1"
     }
 }
