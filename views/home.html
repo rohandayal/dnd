@@ -193,7 +193,7 @@
                 });
             });
 
-            socket.on('announcement', function(msg) {
+            socket.on('progress', function(msg) {
                 interactions.push(JSON.parse(msg));
                 redrawInteractions();
             });
