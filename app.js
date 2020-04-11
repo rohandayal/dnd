@@ -54,20 +54,9 @@ app.get('/api/:endpoint', function(req, res) {
     res.send(rot13(JSON.stringify(paths[req.params.endpoint])));
 });
 
-const ws_server = new ws.Server({port: 8081});
-ws_server.on('connection', (websocket, req) => {
-    websocket.on('message', (message) => {
-        ws_server.clients.forEach((client) => {
-            if(client !== websocket && client.readyState === ws.OPEN) {
-                client.send(message);
-            }
-        });
-    });
-});
-
 io.on('connection', (socket) => {
-    socket.on('announcement', (msg) => {
-        io.emit('announcement', msg);
+    socket.on('progress', (msg) => {
+        io.emit('progress', msg);
     });
 });
 
