@@ -45,7 +45,12 @@
             var possible_actions = {};
             var objects = [];
             var roomno = 0;
+            {{#demo}}
+            var room = "demo";
+            {{/demo}}
+            {{^demo}}
             var room = "start";
+            {{/demo}}
             var socket = io();
             var username = '{{ username }}';
 
@@ -68,7 +73,7 @@
                 objects = params.objects;
                 roomno = params.room;
                 if(roomno > 1) {
-                    socket.emit('progress', JSON.stringify({username: username, message: username + " has moved to Room " + params.room, type: "announcement"}));
+                    socket.emit('progress', JSON.stringify({username: username, message: username + " has moved to Room " + params.room, type: "progress"}));
                 }
                 displayItems();
             }
@@ -183,6 +188,7 @@
                     }
                 });
                 getRoomData(room);
+                {{^demo}}
                 $('.send-action').on('click', function() {
                     sendMessage($('#action-text').val());
                 });
@@ -191,6 +197,7 @@
                         sendMessage($('#action-text').val());
                     }
                 });
+                {{/demo}}
             });
 
             socket.on('progress', function(msg) {

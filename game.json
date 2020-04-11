@@ -11,6 +11,23 @@
         "set",
         "talk to"
     ],
+    "demo": {
+        "name": "start",
+        "room": 0,
+        "background": "#595662",
+        "intro": "Your history of interactions will appear here",
+        "objects": [
+            {
+                "name": "object 1",
+                "visible": true
+            },
+            {
+                "name": "object 2",
+                "visible": true
+            }
+        ],
+        "actions": {}
+    },
     "start": {
         "name": "start",
         "room": 1,

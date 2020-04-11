@@ -47,7 +47,11 @@ app.get('/', function(req, res) {
 });
 
 app.get('/home', function(req, res) {
-    res.render('home', {"username": req.session.username});
+    res.render('home', {"username": req.session.username, demo: false});
+})
+
+app.get('/demo', function(req, res) {
+    res.render('home', {"username": req.session.username, demo: true});
 })
 
 app.get('/api/:endpoint', function(req, res) {
