@@ -19,19 +19,6 @@
                 </div>
                 <div class="col-5 interact h-100">
                     <div class="col-12 h-100">
-                        <!-- <h2>Interact</h2>
-                        <div class="col-12 d-flex flex-column-reverse bd-highlight" style="height: 77%;">
-                            <div class="col-12 action-history h-100" style="overflow-y:auto; -webkit-flex-grow: 1; flex-grow: 1;">
-
-                            </div>
-                        </div>
-                        <hr />
-                        <div class="col-12">
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="action-text" placeholder="Type your action here" />
-                                <button class="btn btn-primary send-action"><i class="fas fa-paper-plane"></i></button>
-                            </div>
-                        </div> -->
                         <div class="chat-container" style="display: flex; flex-direction: column-reverse; height: 80vh;">
                             <div class="chat-log" style="height: 79vh; overflow-y: auto;">
 
@@ -51,6 +38,7 @@
         </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> 
+        <script src="/socket.io/socket.io.js"></script>
         <script lang="javascript">
             var actions = [];
             var interactions = [];
@@ -58,9 +46,8 @@
             var objects = [];
             var roomno = 0;
             var room = "start";
-            const connection = new WebSocket('ws://localhost:8081');
+            var socket = io();
             var username = '{{ username }}';
-            var accesscode = '{{ accesscode }}';
 
             function displayItems() {
                 $('.stage-contents').empty();
@@ -81,7 +68,7 @@
                 objects = params.objects;
                 roomno = params.room;
                 if(roomno > 1) {
-                    connection.send(JSON.stringify({username: username, message: username + " has moved to Room " + params.room, type: "announcement"}));
+                    socket.emit('progress', JSON.stringify({username: username, message: username + " has moved to Room " + params.room, type: "announcement"}));
                 }
                 displayItems();
             }
@@ -93,12 +80,24 @@
                         $('.chat-log').append('<div class="interaction" style="width: 100%; margin-top: 15px;"><span class="badge badge-pill badge-primary ' + interactions[i].username + '" style="margin-right: 10px;">' + interactions[i].username + '</span>' + interactions[i].message + '</div>');
                     } else if(interactions[i].type == "announcement") {
                         $('.chat-log').append('<div class="announcement">' + interactions[i].message + '</div>');
+                    } else if(interactions[i].type == "progress") {
+                        if(interactions[i].username != username) {
+                            $('.chat-log').append('<div class="proceed">' + interactions[i].message + '</div>');
+                        }
                     };
                 }
                 var wtf = $('.chat-log');
                 var height = wtf[0].scrollHeight;
                 wtf.scrollTop(height);
                 // $('.chat-log').scrollTop($('.chat-log').height());
+            }
+
+            function rot13(str) {
+                var input     = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+                var output    = 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm';
+                var index     = x => input.indexOf(x);
+                var translate = x => index(x) > -1 ? output[index(x)] : x;
+                return str.split('').map(translate).join('');
             }
 
             function sendDelayedMessage(val) {
@@ -117,7 +116,7 @@
                             displayItems();
                         }
                         if(val.obj.type == "proceed") {
-                            interactions.push({username: val.username, message: "Moving to next room!", type: "announcement"});
+                            interactions.push({username: val.username, message: "Moving to next room!", type: "progress"});
                             redrawInteractions();
                             window.setTimeout(function() {
                                 getRoomData(val.obj.next);
@@ -163,7 +162,8 @@
             }
 
             function getRoomData(room) {
-                $.get('/api/' + room, function(res) {
+                $.get('/api/' + room, function(response) {
+                    var res = JSON.parse(rot13(response));
                     interactions.push({username: "GameMaster", message: res.intro, type: "interaction"});
                     redrawInteractions();
                     possible_actions = res.actions;
@@ -172,8 +172,8 @@
             }
 
             $(document).ready(function() {
-                $.get('/api/actions', function(getactions) {
-                    actions = getactions;
+                $.get('/api/actions', function(response) {
+                    actions = JSON.parse(rot13(response));
                     var separator = "";
                     for(action in actions) {
                         $('#display-actions').append("<span style='font-weight: bold;'>" + separator + " " + actions[action] + "</span>");
@@ -193,19 +193,10 @@
                 });
             });
 
-            connection.onopen = () => {
-                console.log("connected");
-            }
-            connection.onclose = () => {
-                console.log("disconnected");
-            }
-            connection.onerror = (error) => {
-                console.error('failed: ', error);
-            }
-            connection.onmessage = (event) => {
-                interactions.push(JSON.parse(event.data));
+            socket.on('announcement', function(msg) {
+                interactions.push(JSON.parse(msg));
                 redrawInteractions();
-            }
+            });
         </script>
         <style>
             .object {
@@ -234,6 +225,15 @@
                 padding: 15px;
                 font-weight: bold;
                 border: 1px solid red;
+                border-radius: 10px;
+            }
+            .proceed {
+                width: 100%; 
+                margin-top: 15px;
+                text-align: center;
+                padding: 15px;
+                font-weight: bold;
+                border: 4px solid darkgreen;
                 border-radius: 10px;
             }
         </style>
