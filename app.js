@@ -9,7 +9,7 @@ const uuid = require('uuid');
 
 var app = express();
 
-const hostname = '127.0.0.1';
+// const hostname = '127.0.0.1';
 const port = '8080';
 const sessionParser = session({
     store: new FileStore,
@@ -33,7 +33,7 @@ app.post('/login', function(req, res) {
     req.session.userId = id;
     req.session.username = req.body.username;
     req.session.accesscode = req.body.accesscode;
-    res.header("Access-Control-Allow-Origin", "http://127.0.0.1:8080");
+    // res.header("Access-Control-Allow-Origin", "http://127.0.0.1:8080");
     res.send({result: 200, message: "Session updated"});
 })
 
@@ -49,7 +49,7 @@ app.get('/api/:endpoint', function(req, res) {
     res.json(paths[req.params.endpoint]);
 });
 
-const ws_server = new ws.Server({port: 8090});
+const ws_server = new ws.Server({port: 8081});
 ws_server.on('connection', (websocket, req) => {
     websocket.on('message', (message) => {
         ws_server.clients.forEach((client) => {
@@ -60,4 +60,5 @@ ws_server.on('connection', (websocket, req) => {
     });
 });
 
-const server = app.listen(port, hostname);
+// const server = app.listen(port, hostname);
+const server = app.listen(port);
