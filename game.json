@@ -1,6 +1,5 @@
 {
     "actions": [
-        "look at",
         "say",
         "examine",
         "pick up",
@@ -8,22 +7,19 @@
         "open",
         "go to",
         "drink",
-        "ask",
         "call",
-        "set"
+        "set",
+        "talk to"
     ],
     "start": {
         "name": "start",
-        "colour": "green",
+        "room": 1,
+        "background": "#595662",
+        "intro": "You start this adventure in a valley with a dark lake on your right. The lake looks evil, so you should get away from it as soon as possible. You notice a magical, dark door on the mountainside. You need to get in as quickly as possible.",
         "objects": [
             {
-                "name": "chest",
+                "name": "lake",
                 "visible": true
-            },
-            {
-                "name": "key",
-                "visible": false,
-                "icon": "key.png"
             },
             {
                 "name": "door",
@@ -31,8 +27,276 @@
             }
         ],
         "actions": {
-            "open-chest": "Nothing to see here"
-        },
-        "background": "#FFDAC1"
+            "examine": {
+                "door": {
+                    "type": "message",
+                    "content": "As the moon rises, you see an inscription \"Ennyn Durin Aran Moria. Pedo Mellon a Minno. Im Narvi hain echant. Celebrimbor o Eregion teithant i thiw hin\" appear on the door."
+                },
+                "lake": {
+                    "type": "message",
+                    "content": "The lake is dark and ugly and has the rumblings of a monster inside it. Definitely, don't throw any stones in it."
+                }
+            },
+            "say": {
+                "mellon": {
+                    "type": "proceed",
+                    "next": "cards",
+                    "content": "The password accepted, the door creaks open and you step inside."
+                }
+            }
+        }
+    },
+    "cards": {
+        "name": "cards",
+        "room": 2,
+        "background": "#ffd1dc",
+        "intro": "You now enter a room that looks out of proportions. There is a table at the center, and a tiny door in the corner. The door is too small to enter. The room's soft pink walls are a comfort after the darkness outside.",
+        "objects": [
+            {
+                "name": "table",
+                "visible": true
+            },
+            {
+                "name": "door",
+                "visible": true
+            },
+            {
+                "name": "pack of cards",
+                "visible": false
+            },
+            {
+                "name": "bottle",
+                "visible": false
+            }
+        ],
+        "actions": {
+            "examine": {
+                "table": {
+                    "type": "show",
+                    "elements": ["pack of cards", "bottle"], 
+                    "content": "As you examine the table, you notice a pack of cards and a small bottle."
+                },
+                "pack of cards": {
+                    "type": "message",
+                    "content": "Hmmm, curious. The queen of hearts seems to be missing from the pack."
+                }
+            },
+            "go to": {
+                "table": {
+                    "type": "show",
+                    "elements": ["pack of cards", "bottle"], 
+                    "content": "As you examine the table, you notice a pack of cards and a small bottle."
+                }
+            },
+            "open": {
+                "door": {
+                    "type": "message",
+                    "content": "The door can be opened, but it's too big for you to go in!"
+                }
+            },
+            "drink": {
+                "bottle": {
+                    "type": "proceed",
+                    "next": "control",
+                    "content": "As you drink the magic potion in the bottle, you feel all tingly. Suddenly, you've shrunk down and everything is just too big. You realize you can now pass through the door!"
+                }
+            }
+        }
+    },
+    "control": {
+        "name": "control",
+        "room": 3,
+        "background": "#F9F7E8",
+        "intro": "This next room feels sterile and daunting. A large pair of eyes follow you as you traverse the room. There's a table in the middle of the room. There's a door too, but it's locked.",
+        "objects": [
+            {
+                "name": "table",
+                "visible": true
+            },
+            {
+                "name": "door",
+                "visible": true
+            },
+            {
+                "name": "eyes",
+                "visible": true
+            },
+            {
+                "name": "microscope",
+                "visible": false
+            },
+            {
+                "name": "cryptex",
+                "visible": false,
+                "icon": "cryptex.png"
+            },
+            {
+                "name": "note",
+                "visible": false
+            },
+            {
+                "name": "key",
+                "visible": false
+            }
+        ],
+        "actions": {
+            "examine": {
+                "table": {
+                    "type": "show",
+                    "elements": ["microscope", "cryptex"], 
+                    "content": "As you examine the table, you notice a microscope and a cryptex."
+                },
+                "microscope": {
+                    "type": "show",
+                    "elements": ["note"],
+                    "content": "Ok. So this is creepy. Someone has marked four levels on the microscope magnification knob. How can we tune the microscope? There's a handscribbled note next to the microscope."
+                },
+                "note": {
+                    "type": "message",
+                    "content": "This could be useful. The note says - You can tune the microscope using commands like \"Set #\". For example, use \"Set 1\" to set it to the first setting."
+                },
+                "cryptex": {
+                    "type": "message",
+                    "content": "This seems to be just like the movies! This cryptex has four numbers you can set. What four digit number should be set? And what is inside?"
+                },
+                "eyes": {
+                    "type": "message",
+                    "content": "Apart from the fact that these eyes are really creepy, there's nothing that you can do with them."
+                }
+            },
+            "go to": {
+                "table": {
+                    "type": "show",
+                    "elements": ["microscope", "cryptex"], 
+                    "content": "As you examine the table, you notice a microscope and a cryptex."
+                }
+            },
+            "set": {
+                "1984": {
+                    "type": "show",
+                    "elements": ["key"],
+                    "content": "The cryptex opens and a key falls on the table. You could pick up the key and see what happens."
+                },
+                "1": {
+                    "type": "message",
+                    "content": "You eagerly peer into the microscope. A word focuses into the view as you set the magnification just right. The word is \"LUV\". It's very mini."
+                },
+                "2": {
+                    "type": "message",
+                    "content": "Another word starts appearing in the view as you reach the second setting. It's \"PAX\". Again, very mini."
+                },
+                "3": {
+                    "type": "message",
+                    "content": "Excitement rising, you tune into the third setting. This time, the word is \"PLENTY\". You're amazed at how mini it is."
+                },
+                "4": {
+                    "type": "message",
+                    "content": "You set the microscope to the highest setting. The word \"TRUE\" swims into view. As with the other words, it is quite mini."
+                }
+            },
+            "pick up": {
+                "key": {
+                    "type": "proceed",
+                    "next": "unexplained",
+                    "content": "The key seems to be an exact fit for the door! You walk over to the door, and lo, the key works. You walk into the next room, wondering what your next challenge will be."
+                }
+            }
+        }
+    },
+    "unexplained": {
+        "name": "unexplained",
+        "room": 4,
+        "background": "#CEC8E4",
+        "intro": "The first things you notice as you walk into this new room are three agitated men sitting around a table. Each of them has an identifier stuck on their forehead. The first one has \"man 1\", the second \"man 2\",  and the third has \"man 3\"",
+        "objects": [
+            {
+                "name": "table",
+                "visible": true
+            },
+            {
+                "name": "man 1",
+                "visible": true
+            },
+            {
+                "name": "man 2",
+                "visible": true
+            },
+            {
+                "name": "man 3",
+                "visible": true
+            },
+            {
+                "name": "bottle 1",
+                "visible": false
+            },
+            {
+                "name": "bottle 2",
+                "visible": false
+            },
+            {
+                "name": "bottle 3",
+                "visible": false
+            }
+        ],
+        "actions": {
+            "examine": {
+                "table": {
+                    "type": "show",
+                    "elements": ["bottle 1", "bottle 2", "bottle 3"], 
+                    "content": "You notice on the table, three bottles are kept, one each in front of the men. You wonder what you could do with them."
+                },
+                "bottle 1": {
+                    "type": "message",
+                    "content": "The bottle has a sticker that says \"STRYCHNINE\". It smells horrible!"
+                },
+                "bottle 2": {
+                    "type": "message",
+                    "content": "The bottle has a sticker that says \"RICIN\". It smells horrible!"
+                },
+                "bottle 3": {
+                    "type": "message",
+                    "content": "The bottle has a sticker that says \"IOCANE\". It smells horrible!"
+                }
+            },
+            "go to": {
+                "table": {
+                    "type": "show",
+                    "elements": ["bottle 1", "bottle 2", "bottle 3"], 
+                    "content": "You notice on the table, three bottles are kept, one each in front of the men. You wonder what you could do with them."
+                }
+            },
+            "talk to": {
+                "man 1": {
+                    "type": "show",
+                    "elements": ["bottle 1"],
+                    "content": "The man says \"Anybody want a peanut?\". There is bottle in front of him on the table."
+                },
+                "man 2": {
+                    "type": "show",
+                    "elements": ["bottle 2"],
+                    "content": "The man says (with a lisp) \"You've reached this far already! Inconceivable!\". There is bottle in front of him on the table."
+                },
+                "man 3": {
+                    "type": "show",
+                    "elements": ["bottle 3"],
+                    "content": "The man says \"You killed my father. Prepare to die!\". There is a bottle in front of him on the table."
+                }
+            },
+            "drink": {
+                "bottle 1": {
+                    "type": "message",
+                    "content": "Woah woah woah! You can't just be drinking anything. This could really really kill you."
+                },
+                "bottle 2": {
+                    "type": "message",
+                    "content": "Are you really going to be drinking anything? This stuff is poison!"
+                },
+                "bottle 3": {
+                    "type": "proceed",
+                    "next": "height",
+                    "content": "You drink the bottle. Man 2 looks at you quizically. He realizes that you are immune to this poison because you've been drinking small sips of Iocane for the last 20 years. He gets up, opens the door for you, and then kills himself."
+                }
+            }
+        }
     }
 }

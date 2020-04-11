@@ -8,7 +8,6 @@ const ws = require('ws');
 const uuid = require('uuid');
 
 var app = express();
-var expressws = require('express-ws')(app);
 
 const hostname = '127.0.0.1';
 const port = '8080';
@@ -28,21 +27,6 @@ app.use(bodyparser.json());
 
 let rawdata = fs.readFileSync('game.json');
 var paths = JSON.parse(rawdata);
-
-var session_checker = (req, res, next) => {
-    if(req.session.user && req.cookies.user_details) {
-        res.redirect('/home');
-    } else {
-        next();
-    }
-}
-
-app.use((req, res, next) => {
-    if (req.cookies.user_details && !req.session.user) {
-        res.clearCookie('user_sid');        
-    }
-    next();
-});
 
 app.post('/login', function(req, res) {
     const id = uuid.v4();
@@ -67,12 +51,9 @@ app.get('/api/:endpoint', function(req, res) {
 
 const ws_server = new ws.Server({port: 8090});
 ws_server.on('connection', (websocket, req) => {
-    const username = req.session.username;
-    console.log(username);
     websocket.on('message', (message) => {
         ws_server.clients.forEach((client) => {
             if(client !== websocket && client.readyState === ws.OPEN) {
-                // client.send({username:  message: message});
                 client.send(message);
             }
         });
