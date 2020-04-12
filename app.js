@@ -50,6 +50,10 @@ app.get('/home', function(req, res) {
     res.render('home', {"username": req.session.username, demo: false});
 })
 
+app.get('/master', function(req, res) {
+    res.render('master', {"username": "GameMaster"});
+})
+
 app.get('/demo', function(req, res) {
     res.render('home', {"username": req.session.username, demo: true});
 })
@@ -61,6 +65,9 @@ app.get('/api/:endpoint', function(req, res) {
 io.on('connection', (socket) => {
     socket.on('progress', (msg) => {
         io.emit('progress', msg);
+    });
+    socket.on('interaction', (msg) => {
+        io.emit('interaction', msg);
     });
 });
 

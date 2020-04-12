@@ -7,7 +7,6 @@
         "open",
         "go to",
         "drink",
-        "call",
         "set",
         "talk to"
     ],
@@ -59,6 +58,10 @@
                     "type": "proceed",
                     "next": "cards",
                     "content": "The password accepted, the door creaks open and you step inside."
+                },
+                "friend": {
+                    "type": "message",
+                    "content": "An dwarven door made with elven magic will not open with English."
                 }
             }
         }
@@ -312,6 +315,215 @@
                     "type": "proceed",
                     "next": "height",
                     "content": "You drink the bottle. Man 2 looks at you quizically. He realizes that you are immune to this poison because you've been drinking small sips of Iocane for the last 20 years. He gets up, opens the door for you, and then kills himself."
+                }
+            }
+        }
+    },
+    "height": {
+        "name": "height",
+        "room": 5,
+        "background": "#47b300",
+        "intro": "The mood becomes brighter as you step into this next room. It looks to be a shop of some kind. A shaggy haired man greets you as you step in. There is a door in the room, but it's locked with a heavy padlock.",
+        "objects": [
+            {
+                "name": "man",
+                "visible": true
+            },
+            {
+                "name": "door",
+                "visible": true
+            },
+            {
+                "name": "wand 1",
+                "visible": false
+            },
+            {
+                "name": "wand 2",
+                "visible": false
+            },
+            {
+                "name": "wand 3",
+                "visible": false
+            }
+        ],
+        "actions": {
+            "examine": {
+                "man": {
+                    "type": "message",
+                    "content": "The man appears quite wise and willing to help."
+                },
+                "door": {
+                    "type":"message",
+                    "content": "The padlock appears solid! This will require a special kind of key."
+                },
+                "wand 1": {
+                    "type": "message",
+                    "content": "As you examine the first wand, Ollivander says, \"This one is made with Willow wood with a unicorn hair. 14 inches long.\""
+                },
+                "wand 2": {
+                    "type": "message",
+                    "content": "\"This one is made with Vine wood a Dragon Heartstring core. It's 10¾ inches\", Ollivander announces."
+                },
+                "wand 3": {
+                    "type": "message",
+                    "content": "\"Made with Holly, this wand has a Phoenix feather core. It's 11 inches long\", Ollivander says, with a flair of a seasoned wandmaker."
+                }
+            },
+            "pick up": {
+                "wand 1": {
+                    "type": "message",
+                    "content": "Ollivander doesn't look too happy as you pick up the first wand. You immediately put it back."
+                },
+                "wand 2": {
+                    "type": "message",
+                    "content": "You pick up the second wand. No response from Ollivander - so that's a positive. You flick the wand, and wands and boxes go flying around the room. Ollivander quietly replaces them with a wry smile on his face."
+                },
+                "wand 3": {
+                    "type": "message",
+                    "content": "Wand 3 feels good in your hand. You point it at a candle stand and say \"wingardium levi-o-sa\" and the candle stand gently floats. This could be useful."
+                }
+            },
+            "talk to": {
+                "man": {
+                    "type": "message",
+                    "content": "As you greet the man, he smiles at you. \"Welcome to Ollivander's\" he says. \"What would you like to see? Go ahead - say it\""
+                }
+            },
+            "say": {
+                "wands": {
+                    "type":"show",
+                    "elements": ["wand 1", "wand 2", "wand 3"],
+                    "content": "\"Of course\" says Ollivander. \"Why don't you choose from one of these?\" Ollivander places three wands in front of you."
+                },
+                "alohomora": {
+                    "type": "proceed",
+                    "next": "boom",
+                    "content": "Ah! The unlock spell, delivered with a flourish. The lock falls open and you can proceed to the next room."
+                }
+            }
+        }
+    },
+    "boom": {
+        "name": "boom",
+        "room": 6,
+        "background": "#FF0000",
+        "intro": "This just gets weirder and weirder. You enter a room. A tense man is looking at the door. There's also a small box.",
+        "objects": [
+            {
+                "name": "man",
+                "visible": true
+            },
+            {
+                "name": "door",
+                "visible": true
+            },
+            {
+                "name": "box",
+                "visible": true
+            },
+            {
+                "name": "detonator",
+                "visible": false
+            }
+        ],
+        "actions": {
+            "examine": {
+                "door": {
+                    "type": "message",
+                    "content": "The door seems to be wired with TNT. This is useful. Only question is, how can we set it off!"
+                },
+                "man": {
+                    "type": "message",
+                    "content": "The man appears to be talking to himself!"
+                },
+                "box": {
+                    "type": "message",
+                    "content": "The box is filled with soup. Intriguing!"
+                },
+                "detonator": {
+                    "type": "message",
+                    "content": "The detonator seems scary. Should you even pick it up?"
+                }
+            },
+            "talk to": {
+                "man": {
+                    "type":"message",
+                    "content": "The man turns to you, and bitterly says, \"You are not your job, you're not how much money you have in the bank. You are not the car you drive. You're not the contents of your wallet. You are not your f***ing khakis. You are all singing, all dancing crap of the world.\""
+                }
+            },
+            "hit": {
+                "man": {
+                    "type": "show",
+                    "elements": ["detonator"],
+                    "content": "Not sure if this will help, you punch the man, right across his face. With his teeth bloody, the man turns back to you. To your surprise, he is smiling. \"This is your life, and it's ending one minute at a time.\", he says. He takes out a detonator from his pocket and places it on the box."
+                }
+            },
+            "pick up": {
+                "detonator": {
+                    "type": "proceed",
+                    "next": "equation",
+                    "content": "You pick up the detonator and gingerly press the lever. With a huge explosion, the door breaks into smithereens. The man laughs hysterically and punches himself."
+                }
+            }
+        }
+    },
+    "equation": {
+        "name": "equation",
+        "room": 7,
+        "background": "#484551",
+        "intro": "You now walk into a dark room. In the middle of the room, you barely make out a robot. It's dark, green eyes are shining in the darkness. There is no door.",
+        "objects": [
+            {
+                "name": "robot",
+                "visible": true
+            },
+            {
+                "name": "equation",
+                "visible": false
+            }
+        ],
+        "actions": {
+            "examine": {
+                "robot": {
+                    "type": "message",
+                    "content": "The robot looks hardy. You can't help but notice a look of resignation in it's eyes. You get a feeling that getting the information you need from it will be difficult."
+                },
+                "equation": {
+                    "type": "message",
+                    "content": "The equation reads <i>x<sup>2</sup>-66x+1008=0</i>. What do you say?"
+                }
+            },
+            "talk to": {
+                "robot": {
+                    "type": "message",
+                    "content": "\"Brain the size of a planet, and here I am. You're going to ask me a stupid question aren't you? I hope you say the *magic word*.\", says the robot."
+                }
+            },
+            "hit": {
+                "robot": {
+                    "type": "message",
+                    "content": "\"I think you ought to know I'm feeling very depressed. Hitting me is not particularly making me feel any better. Also, you're rude.\", it intones."
+                }
+            },
+            "call": {
+                "robot": {
+                    "type": "message",
+                    "content": "\"You're very rude. I wish you'd just be nice and say the *magic word* rather than trying to engage my enthusiasm because I haven't got one.\", it says morosely. "
+                }
+            },
+            "say": {
+                "please": {
+                    "type": "show",
+                    "elements": ["equation"],
+                    "content": "\"You think you've got problems? What are you supposed to do if you are a manically depressed android? No, don't try to answer that. I'm fifty thousand times more intelligent than you and even I don't know the answer. It gives me a headache just trying to think down to your level. Anyways, I've brought the question to the answer to the universe, life everything to this simple equation. One of the roots is the answer, which you have to say.\""
+                },
+                "42": {
+                    "type":"message",
+                    "content": "Congratulations! You've found the answer to the question! Tell the real GameMaster over Whatsapp/Zoom to complete this journey!"
+                },
+                "magic word": {
+                    "type": "message",
+                    "content": "\"Don't be obtuse. That's not the magic word! You need my help? You need to say the *magic word*.\". The robot looks exasperated."
                 }
             }
         }

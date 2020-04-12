@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html style="height: 100%;">
+    <head>
+        <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Master panel</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+    </head>
+    <body class="h-100" style="font-size: 1.3em;">
+        <div class="container-fluid h-100">
+            <div class="row h-100 happening">
+                
+            </div>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> 
+        <script src="/socket.io/socket.io.js"></script>
+        <script lang="javascript">
+            var interactions = [];
+            var users = {};
+            var socket = io();
+
+            window.addEventListener('beforeunload', function (e) {
+                e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
+                e.returnValue = '';// Chrome requires returnValue to be set
+            });
+
+            function displayItems() {
+                $('.stage-contents').empty();
+                for (index in objects) {
+                    var obj = objects[index];
+                    if(obj.visible == true) {
+                        if(obj.hasOwnProperty("icon")) {
+                            $('.stage-contents').append('<div class="object justify-content-center align-self-center rounded-circle" style="display: inline-block; text-align: center;"><image class="iconimage" src="../images/' + obj.icon + '" /><br />' + obj.name + '</div>');
+                        } else {
+                            $('.stage-contents').append('<div class="object justify-content-center align-self-center rounded-circle" style="display: inline-block; text-align: center;">' + obj.name + '</div>');
+                        }
+                    }
+                }
+            }
+
+            function redrawInteractions(username) {
+                var wtf = $('#' + username);
+                wtf.empty();
+                var timenow = new Date().toLocaleString('en-IN', { hour: 'numeric', minute: 'numeric', hour12: true });
+                for(var i=0; i<users[username].length; i++) {
+                    var thisinteraction = users[username][i];
+                    if(thisinteraction.type == "interaction") {
+                        wtf.append('<div class="interaction" style="width: 100%; margin-top: 15px;"><span class="badge badge-pill badge-primary ' + thisinteraction.username + '" style="margin-right: 10px;">' + thisinteraction.username + '</span>' + thisinteraction.message + ' - ' + timenow + '</div>');
+                    } else if(thisinteraction.type == "announcement") {
+                        wtf.append('<div class="announcement">' + thisinteraction.message + ' - ' + timenow + '</div>');
+                    } else if(thisinteraction.type == "progress") {
+                        wtf.append('<div class="proceed">' + thisinteraction.message + ' - ' + timenow + '</div>');
+                    };
+                }
+                var height = wtf.get(0).scrollHeight;
+                wtf.scrollTop(height);
+            }
+
+            function rot13(str) {
+                var input     = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+                var output    = 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm';
+                var index     = x => input.indexOf(x);
+                var translate = x => index(x) > -1 ? output[index(x)] : x;
+                return str.split('').map(translate).join('');
+            }
+
+            function sendMessage(value) {
+                interactions.push({username: username, message: value, type: "interaction"});
+                redrawInteractions();
+                $('#action-text').val("");
+                var thismessage = "You can't do that. Try something else.";
+                var thisaction = "";
+                var thistype = "";
+                var thisobjname = "";
+                var thisnext = "";
+                var thisobj = {};
+                var val = value.toLowerCase();
+                for(var i=0; i<actions.length; i++) {
+                    if(val.indexOf(actions[i]) > -1) {
+                        thisaction = actions[i];
+                        break;
+                    }
+                }
+                var found = false;
+                if(possible_actions.hasOwnProperty(thisaction)) {
+                    for(obj in possible_actions[thisaction]) {
+                        if(val.indexOf(obj) > -1 && obj.length > thisobjname.length) {
+                            thismessage = possible_actions[thisaction][obj]["content"];
+                            thisobjname = obj;
+                            found = true;
+                            thisobj = possible_actions[thisaction][obj];
+                        }
+                    }
+                }
+                sendDelayedMessage({username: "GameMaster", message: thismessage, obj: thisobj});
+            }
+
+
+            $(document).ready(function() {
+                $('.send-action').on('click', function() {
+                    sendMessage($('#action-text').val());
+                });
+                $('#action-text').on('keyup', function(event) {
+                    if(event.keycode == 13 || event.which == 13) {
+                        sendMessage($('#action-text').val());
+                    }
+                });
+            });
+
+            socket.on('progress', function(message) {
+                var msg = JSON.parse(message); 
+                var cleanusername = msg.username.split(" ")[0];
+                if(!users.hasOwnProperty(cleanusername)) {
+                    users[msg.username] = [];
+                    $('.happening').append('<div class="col-2 boxborder" style="overflow-y: auto; height: 100vh;" id="' + cleanusername + '"></div>');
+                }
+                users[cleanusername].push(msg);
+                redrawInteractions(cleanusername);
+            });
+
+            socket.on('interaction', function(message) {
+                var msg = JSON.parse(message); 
+                var cleanusername = msg.username.split(" ")[0];
+                if(!users.hasOwnProperty(cleanusername)) {
+                    users[msg.username] = [];
+                    $('.happening').append('<div class="col-2 boxborder" style="overflow-y: auto; height: 100vh;" id="' + cleanusername + '"></div>');
+                }
+                users[cleanusername].push(msg);
+                redrawInteractions(cleanusername);
+            });
+        </script>
+        <style>
+            .object {
+                font-size: 15px;
+                padding: 30px;
+                /* border: 1px solid #333; */
+                -moz-box-shadow: 0px 0px 5px 5px rgba(255,255,255,1);
+                box-shadow: 0px 0px 5px 5px rgba(255,255,255,1);
+                margin: 20px; 
+                text-transform: uppercase;
+                background: white;
+                width: 150px;
+                height: 150px;
+            }
+            .iconimage {
+                width: 50px;
+                height: 50px;
+            }
+            .GameMaster {
+                background: red;
+            }
+            .announcement {
+                width: 100%; 
+                margin-top: 15px;
+                text-align: center;
+                padding: 15px;
+                font-weight: bold;
+                border: 1px solid red;
+                border-radius: 10px;
+            }
+            .proceed {
+                width: 100%; 
+                margin-top: 15px;
+                text-align: center;
+                padding: 15px;
+                font-weight: bold;
+                border: 4px solid darkgreen;
+                border-radius: 10px;
+            }
+            .boxborder {
+                border: 1px solid grey;
+            }
+        </style>
+    </body>
+</html>

@@ -54,6 +54,11 @@
             var socket = io();
             var username = '{{ username }}';
 
+            window.addEventListener('beforeunload', function (e) {
+                e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
+                e.returnValue = '';// Chrome requires returnValue to be set
+            });
+
             function displayItems() {
                 $('.stage-contents').empty();
                 for (index in objects) {
@@ -134,10 +139,12 @@
             function sendMessage(value) {
                 interactions.push({username: username, message: value, type: "interaction"});
                 redrawInteractions();
+                socket.emit('interaction', JSON.stringify({username: username, message: value, type: "interaction"}));
                 $('#action-text').val("");
                 var thismessage = "You can't do that. Try something else.";
                 var thisaction = "";
                 var thistype = "";
+                var thisobjname = "";
                 var thisnext = "";
                 var thisobj = {};
                 var val = value.toLowerCase();
@@ -150,16 +157,11 @@
                 var found = false;
                 if(possible_actions.hasOwnProperty(thisaction)) {
                     for(obj in possible_actions[thisaction]) {
-                        if(val.indexOf(obj) > -1) {
+                        if(val.indexOf(obj) > -1 && obj.length > thisobjname.length) {
                             thismessage = possible_actions[thisaction][obj]["content"];
+                            thisobjname = obj;
                             found = true;
                             thisobj = possible_actions[thisaction][obj];
-                        }
-                        if(val == obj) {
-                            thismessage = possible_actions[thisaction][obj]["content"];
-                            found = true;
-                            thisobj = possible_actions[thisaction][obj];
-                            break;
                         }
                     }
                 }
