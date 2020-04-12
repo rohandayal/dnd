@@ -35,11 +35,13 @@
         "objects": [
             {
                 "name": "lake",
-                "visible": true
+                "visible": true,
+                "icon": "lake.png"
             },
             {
                 "name": "door",
-                "visible": true
+                "visible": true,
+                "icon": "door1.png"
             }
         ],
         "actions": {
@@ -74,19 +76,23 @@
         "objects": [
             {
                 "name": "table",
-                "visible": true
+                "visible": true,
+                "icon": "table1.png"
             },
             {
                 "name": "door",
-                "visible": true
+                "visible": true,
+                "icon": "door2.png"
             },
             {
                 "name": "pack of cards",
-                "visible": false
+                "visible": false,
+                "icon": "cards.png"
             },
             {
                 "name": "bottle",
-                "visible": false
+                "visible": false,
+                "icon": "bottle.png"
             }
         ],
         "actions": {
@@ -131,19 +137,23 @@
         "objects": [
             {
                 "name": "table",
-                "visible": true
+                "visible": true,
+                "icon": "table1.png"
             },
             {
                 "name": "door",
-                "visible": true
+                "visible": true,
+                "icon": "door3.png"
             },
             {
                 "name": "eyes",
-                "visible": true
+                "visible": true,
+                "icon": "eyes.png"
             },
             {
                 "name": "microscope",
-                "visible": false
+                "visible": false,
+                "icon": "microscope.png"
             },
             {
                 "name": "cryptex",
@@ -152,11 +162,13 @@
             },
             {
                 "name": "note",
-                "visible": false
+                "visible": false,
+                "icon": "note.png"
             },
             {
                 "name": "key",
-                "visible": false
+                "visible": false,
+                "icon": "key.png"
             }
         ],
         "actions": {
@@ -231,31 +243,43 @@
         "objects": [
             {
                 "name": "table",
-                "visible": true
+                "visible": true,
+                "icon": "table1.png"
             },
             {
                 "name": "man 1",
-                "visible": true
+                "visible": true,
+                "icon": "man1.png"
             },
             {
                 "name": "man 2",
-                "visible": true
+                "visible": true,
+                "icon": "man2.png"
             },
             {
                 "name": "man 3",
-                "visible": true
+                "visible": true,
+                "icon": "man3.png"
+            },
+            {
+                "name": "door",
+                "visible": true,
+                "icon": "door3.png"
             },
             {
                 "name": "bottle 1",
-                "visible": false
+                "visible": false,
+                "icon": "bottle.png"
             },
             {
                 "name": "bottle 2",
-                "visible": false
+                "visible": false,
+                "icon": "bottle2.png"
             },
             {
                 "name": "bottle 3",
-                "visible": false
+                "visible": false,
+                "icon": "bottle3.png"
             }
         ],
         "actions": {
@@ -327,23 +351,28 @@
         "objects": [
             {
                 "name": "man",
-                "visible": true
+                "visible": true,
+                "icon": "man4.png"
             },
             {
                 "name": "door",
-                "visible": true
+                "visible": true,
+                "icon": "door2.png"
             },
             {
                 "name": "wand 1",
-                "visible": false
+                "visible": false,
+                "icon": "wand1.png"
             },
             {
                 "name": "wand 2",
-                "visible": false
+                "visible": false,
+                "icon": "wand2.png"
             },
             {
                 "name": "wand 3",
-                "visible": false
+                "visible": false,
+                "icon": "wand3.png"
             }
         ],
         "actions": {
@@ -380,7 +409,7 @@
                 },
                 "wand 3": {
                     "type": "message",
-                    "content": "Wand 3 feels good in your hand. You point it at a candle stand and say \"wingardium levi-o-sa\" and the candle stand gently floats. This could be useful."
+                    "content": "Wand 3 feels good in your hand. You point it at a candle stand and say \"wingardium levi-o-sa\" and the candle stand gently floats. This could be useful. What spell can you cast to open the door?"
                 }
             },
             "talk to": {
@@ -411,19 +440,23 @@
         "objects": [
             {
                 "name": "man",
-                "visible": true
+                "visible": true,
+                "icon": "man5.png"
             },
             {
                 "name": "door",
-                "visible": true
+                "visible": true,
+                "icon": "door4.png"
             },
             {
                 "name": "box",
-                "visible": true
+                "visible": true,
+                "icon": "box.png"
             },
             {
                 "name": "detonator",
-                "visible": false
+                "visible": false,
+                "icon": "detonator.png"
             }
         ],
         "actions": {
@@ -475,11 +508,13 @@
         "objects": [
             {
                 "name": "robot",
-                "visible": true
+                "visible": true,
+                "icon": "robot.png"
             },
             {
                 "name": "equation",
-                "visible": false
+                "visible": false,
+                "icon": "equation.png"
             }
         ],
         "actions": {
@@ -520,6 +555,10 @@
                 "42": {
                     "type":"message",
                     "content": "Congratulations! You've found the answer to the question! Tell the real GameMaster over Whatsapp/Zoom to complete this journey!"
+                },
+                "24": {
+                    "type": "message",
+                    "content": "You <b>still</b> haven't figured out the point of this have you? So close, though."
                 },
                 "magic word": {
                     "type": "message",
